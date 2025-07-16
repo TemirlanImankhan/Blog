@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактирование профиля - Blogging Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+
+    <header class="bg-blue-600 text-white py-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-3xl">Blogging Platform</h1>
+            <nav>
+                <a href="{% url 'home' %}" class="text-white mx-2">Главная</a>
+                <a href="{% url 'profile' %}" class="text-white mx-2">Профиль</a>
+                <a href="{% url 'logout' %}" class="text-white mx-2">Выход</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container mx-auto py-8">
+        <h2 class="text-2xl font-semibold mb-4">Редактирование профиля</h2>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded">Сохранить</button>
+        </form>
+    </div>
+
+</body>
+</html>

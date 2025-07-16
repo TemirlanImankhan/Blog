@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post.title }} - Blogging Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.2/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #e0f7fa, #fce4ec);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .comment-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .comment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .btn {
+            background: linear-gradient(to right, #4caf50, #81c784);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+        .btn:hover {
+            background: linear-gradient(to right, #388e3c, #66bb6a);
+        }
+    </style>
+    <script src="{% static 'js/likes.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Header -->
+    <header class="bg-blue-600 text-white py-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-bold">Blogging Platform</h1>
+            <nav>
+                <a href="{% url 'home' %}" class="text-white mx-2 hover:underline">Главная</a>
+                <a href="{% url 'profile' %}" class="text-white mx-2 hover:underline">Профиль</a>
+                <a href="{% url 'logout' %}" class="text-white mx-2 hover:underline">Выход</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Post Content -->
+    <div class="container mx-auto py-8">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-3xl font-bold text-blue-800 mb-4">{{ post.title }}</h2>
+            {% if post.image %}
+                <img src="{{ post.image.url }}" alt="{{ post.title }}" class="w-full h-auto rounded-lg mb-4">
+            {% endif %}
+            <p class="text-gray-700 leading-relaxed">{{ post.content }}</p>
+            <div class="flex items-center space-x-4">
+                <button class="text-blue-600 font-semibold hover:underline" onclick="likePost({{ post.id }})">👍 Лайк</button>
+                <span id="likes-count-{{ post.id }}">{{ post.likes_count }}</span>
+                <button class="text-red-600 font-semibold hover:underline" onclick="dislikePost({{ post.id }})">👎 Дизлайк</button>
+                <span id="dislikes-count-{{ post.id }}">{{ post.dislikes_count }}</span>
+            </div>
+        </div>
+
+        <!-- Comments Section -->
+        <h3 class="text-2xl font-semibold mt-8 mb-4 text-blue-700">Комментарии:</h3>
+        <div class="space-y-4">
+            {% for comment in post.comments.all %}
+                <div class="comment-card bg-white p-4 rounded-lg shadow-md">
+                    <p class="text-sm text-gray-500"><strong>{{ comment.user.username }}</strong> написал:</p>
+                    <p class="text-gray-700 mt-2">{{ comment.content }}</p>
+                </div>
+            {% empty %}
+                <p class="text-center text-gray-500">Комментариев пока нет. Будьте первым!</p>
+            {% endfor %}
+        </div>
+
+        <!-- Add Comment Form -->
+        <div class="mt-8">
+            <h3 class="text-xl font-semibold text-blue-700 mb-4">Добавить комментарий:</h3>
+            <form method="POST" action="{% url 'add_comment' post.id %}">
+                {% csrf_token %}
+                <textarea name="content" rows="4" class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Напишите ваш комментарий..."></textarea>
+                <button type="submit" class="btn mt-4">Отправить</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

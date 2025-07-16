@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Результаты поиска</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.2/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #e0f2fe, #fefce8);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .no-results {
+            color: #ff4d4d;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .post-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            background: linear-gradient(to bottom right, #ffffff, #f3f4f6);
+        }
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .post-title {
+            color: #1e40af;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        .post-title:hover {
+            text-decoration: underline;
+            color: #1d4ed8;
+        }
+        .read-more {
+            color: #2563eb;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        .read-more:hover {
+            color: #1e3a8a;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto py-10 px-4">
+        <h1 class="text-2xl font-bold mb-6 text-center text-blue-800">Результаты поиска</h1>
+
+        {% if query %}
+            <p class="mb-4 text-gray-700 text-center">Вы искали: <strong>{{ query }}</strong></p>
+        {% elif selected_category %}
+            <p class="mb-4 text-gray-700 text-center">Вы выбрали категорию: <strong>
+                {% for category in categories %}
+                    {% if category.id|stringformat:"s" == selected_category %}
+                        {{ category.name }}
+                    {% endif %}
+                {% endfor %}
+            </strong></p>
+        {% endif %}
+
+        {% if posts.exists %}
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for post in posts %}
+                <div class="post-card p-6 shadow-xl rounded-lg">
+                    <h2 class="text-xl font-semibold post-title">{{ post.title }}</h2>
+                    <p class="text-sm text-gray-500">{{ post.created_at|date:"d M Y H:i" }}</p>
+                    <p class="text-gray-700 mb-4">{{ post.content|truncatewords:20 }}</p>
+                    <a href="{% url 'post_detail' post.id %}" class="read-more">Читать далее</a>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center text-gray-500 no-results">Посты не найдены.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактирование поста</title>
+    <!-- Подключаем стиль Quill.js -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+</head>
+<body>
+    <h1>Редактирование поста</h1>
+
+    <!-- Форма для редактирования поста -->
+    <form method="POST" action="{% url 'edit_post' post.id %}">
+        {% csrf_token %}
+        
+        <!-- Поле для ввода заголовка -->
+        <label for="title">Заголовок:</label>
+        <input type="text" name="title" id="title" value="{{ post.title }}" required>
+
+        <!-- Контейнер для редактора Quill -->
+        <div id="editor-container">
+            {{ post.content }}
+        </div>
+
+        <!-- Скрытое поле для передачи отредактированного контента -->
+        <textarea name="content" id="content" style="display:none;"></textarea>
+
+        <button type="submit">Сохранить</button>
+    </form>
+
+    <!-- Подключаем Quill.js -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script>
+        // Инициализируем Quill для редактирования
+        var quill = new Quill('#editor-container', {
+            theme: 'snow',
+            placeholder: 'Напишите вашу статью...',
+            modules: {
+                toolbar: [
+                    [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['bold', 'italic', 'underline'],
+                    ['link'],
+                    [{ 'align': [] }],
+                    ['clean']
+                ]
+            }
+        });
+
+        // Когда форма отправляется, копируем содержимое редактора в скрытое поле
+        document.querySelector('form').onsubmit = function() {
+            var content = quill.root.innerHTML;
+            document.querySelector('#content').value = content;
+        };
+    </script>
+</body>
+</html>

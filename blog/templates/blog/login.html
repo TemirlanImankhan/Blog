@@ -1,0 +1,113 @@
+{% load socialaccount %}
+
+<!-- Фон и центрирование -->
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-100 px-4">
+    <div class="w-full max-w-sm bg-white p-8 rounded-3xl shadow-2xl border border-gray-200 animate-fade-in">
+        <h2 class="text-3xl font-bold text-center text-blue-700 mb-6">Вход в аккаунт</h2>
+
+        <form method="POST" action="{% url 'account_login' %}" class="space-y-4">
+            {% csrf_token %}
+            <div class="space-y-2 text-sm text-gray-700">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="w-full bg-blue-600 text-white py-3 text-lg font-semibold rounded-lg shadow hover:bg-blue-700 transition-all duration-300">
+                Войти
+            </button>
+        </form>
+
+        <div class="my-4 text-center text-gray-400 relative">
+            <span class="px-2 bg-white z-10 relative">или</span>
+            <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-gray-200"></div>
+            </div>
+        </div>
+
+        <!-- Google вход -->
+        <a href="{% provider_login_url 'google' %}" class="w-full block text-center bg-red-500 hover:bg-red-600 text-white py-3 text-lg font-semibold rounded-lg shadow transition duration-300">
+            Войти через Google
+        </a>
+
+        <div class="text-center mt-6">
+            <p class="text-sm text-gray-600">Нет аккаунта? 
+                <a href="{% url 'account_signup' %}" class="text-blue-600 font-medium hover:text-blue-800 hover:underline transition duration-200">
+                    Зарегистрируйтесь
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Анимации и фон -->
+<style>
+    @keyframes fade-in {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-fade-in {
+        animation: fade-in 0.6s ease-out;
+    }
+
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f9fafb;
+    }
+
+    .bg-gradient-to-br {
+        background: linear-gradient(to bottom right, #ebf8ff, #ffffff, #f3e8ff);
+    }
+
+    .rounded-3xl {
+        border-radius: 1.5rem;
+    }
+
+    .shadow-2xl {
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .hover\:shadow-lg:hover {
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .transition-all {
+        transition: all 0.3s ease-in-out;
+    }
+
+    .text-blue-700 {
+        color: #1d4ed8;
+    }
+
+    .hover\:text-blue-800:hover {
+        color: #1e40af;
+    }
+
+    .bg-blue-600 {
+        background-color: #2563eb;
+    }
+
+    .hover\:bg-blue-700:hover {
+        background-color: #1d4ed8;
+    }
+
+    .bg-red-500 {
+        background-color: #ef4444;
+    }
+
+    .hover\:bg-red-600:hover {
+        background-color: #dc2626;
+    }
+
+    .rounded-lg {
+        border-radius: 0.5rem;
+    }
+
+    .py-3 {
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+    }
+
+    .text-lg {
+        font-size: 1.125rem;
+    }
+</style>

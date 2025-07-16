@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация - Blogging Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.2/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #e0f2fe, #fefce8);
+        }
+        .form-container {
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.2);
+        }
+        .form-title {
+            color: #1e40af;
+            font-weight: bold;
+        }
+        .form-button {
+            background-color: #4a90e2;
+            transition: background-color 0.3s ease;
+        }
+        .form-button:hover {
+            background-color: #357ab8;
+        }
+        .link {
+            color: #1e40af;
+            font-weight: bold;
+        }
+        .link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <div class="flex items-center justify-center min-h-screen px-4">
+        <div class="w-full max-w-sm bg-white p-8 shadow rounded form-container">
+            <h2 class="text-2xl font-semibold mb-4 form-title text-center">Регистрация</h2>
+            <form method="POST" class="space-y-4">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded form-button">Зарегистрироваться</button>
+            </form>
+            <p class="mt-4 text-sm text-center">Уже есть аккаунт? 
+                <a href="{% url 'login' %}" class="link">Войдите</a>
+            </p>
+        </div>
+    </div>
+
+</body>
+</html>
